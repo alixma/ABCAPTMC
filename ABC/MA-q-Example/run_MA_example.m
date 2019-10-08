@@ -383,8 +383,7 @@ if(moremarginals)
     % ABC-APTMC posterior
     plot(xmesh_e, xdensity_e, 'Color', rgb('MediumTurquoise'), 'LineWidth', 1);
     % ABC-APTMC-nocold posterior
-    plot(xmesh_en, xdensity_en, 'Color', rgb('Plum'), 'LineWidth', .5);  xlabel('\theta_1');
-    
+    plot(xmesh_en, xdensity_en, 'Color', rgb('Plum'), 'LineWidth', .5);  xlabel('\theta_1');    
     
     %THETA_2 kernel density estimates
     [~, ydensity_r, ymesh_r] = kde(R_rej(:,2), 2^10);
@@ -409,8 +408,7 @@ if(moremarginals)
     % ABC-APTMC posterior
     plot(ymesh_e, ydensity_e, 'Color', rgb('MediumTurquoise'), 'LineWidth', 1);
     % ABC-APTMC no cold updates posterior
-    plot(ymesh_en, ydensity_en, 'Color', rgb('Plum'), 'LineWidth', .5); xlabel('\theta_2');
-       
+    plot(ymesh_en, ydensity_en, 'Color', rgb('Plum'), 'LineWidth', .5); xlabel('\theta_2');       
     
     fprintf('Plotting marginals...done \n\n')
 end
@@ -517,7 +515,7 @@ if(boxplots)
 end
 
 fprintf('Saving workspace... \n')
-save('results/ABC/MA/MA_example_wkspace.mat')
+save(sprintf('results/MA/MA_example_wkspace_%s.mat', datestr(now, 'yyyymmdd_HHMM')))
 fprintf('Saving workspace...done \n')
 
 

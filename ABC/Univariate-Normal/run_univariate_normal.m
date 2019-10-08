@@ -73,7 +73,7 @@ plot_allchains(S1, params, observations, 40, 2^8)
 
 %save workspace
 fprintf('Saving workspace... ')
-save(sprintf('results/MA/univariate_normal_wkspace_%s.mat', datestr(now, 'yyyymmdd_HHMM')))
+save(sprintf('results/univariate_normal_wkspace_%s.mat', datestr(now, 'yyyymmdd_HHMM')))
 fprintf('done \n')
 
 %%

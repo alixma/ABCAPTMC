@@ -10,7 +10,7 @@ ne = zeros(params.K, C);
 parfor c=1:C
     % initialise theta
     params1 = params;
-    theta1=params1.theta_in; %sample_theta(params1.K);
+    theta1 = params1.theta_in; %sample_theta(params1.K);
     x1 = MA_get_stats(theta1, simulations);
     
     Theta1 = zeros(params1.N, 2, params1.K); Theta1(1,:,:) = theta1;
@@ -46,10 +46,8 @@ parfor c=1:C
             
             %%%%%%%%%%%%%%%%%%%%%%
             if(~record)&&(t>=params1.burnin) % record first n with minimum epsilon
-                %if(epsilon((min(max(1,floor(t)), params1.T)),1)==epsilon(params1.T,1))
                 ne1 = n1;
                 record=1;
-                %end
             end
             %%%%%%%%%%%%%%%%%%%%%%
         end

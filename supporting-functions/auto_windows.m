@@ -1,8 +1,5 @@
 function out = auto_windows(taus, c)
-% Function to compute ESS and IAT from a vector
-% ESS:  effective sample size
-% IAT integrated autocorrelation time
-% Note: adapted from ess in the R package batchmeans
+% Function to get cut-off window when computing IAT
 N = length(taus);
 m = 1:N < c*taus';
 cnt = sum(m);

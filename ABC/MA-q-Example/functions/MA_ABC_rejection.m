@@ -7,7 +7,7 @@ Rej_out = zeros(N, 1);
 
 parfor n=1:N
     % initialise theta from prior
-    theta1=Theta_in(:, n);
+    theta1 = Theta_in(:, n);
     x1 = MA_get_stats(theta1, simulations);    
     rej1 = norm(simulations.y'-x1) < epsilon;    
     

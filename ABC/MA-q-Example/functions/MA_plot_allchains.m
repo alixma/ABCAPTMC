@@ -20,11 +20,11 @@ for k=1:params.K
     
     S1 = Theta((ne(k)+1):n(k), 1, k);
     S2 = Theta((ne(k)+1):n(k), 2, k);
-    p=gkde2([S1,S2]);
+    p = gkde2([S1,S2]);
     
     [cx, cy] = fixxy(p.x, p.y);
       
-    S = MA_likelihood2(cx, cy, Y, 1.749528420996907e-25);
+    S = MA_likelihood(cx, cy, Y, 1.749528420996907e-25);
     
     
     scatter(S1, S2, sz, colour, 'filled');
