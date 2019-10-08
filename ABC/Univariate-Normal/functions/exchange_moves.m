@@ -18,7 +18,7 @@ if(simple)
     x_out(small(mkswaps)) = x_in(big(mkswaps)); 
     
     n_in(swap(:)) = n_in(swap(:))+1;  
-    rej_out = 3+mkswaps; % 4 for accepted 3 for rejected swaps
+    rej_out = 3 + mkswaps; % 4 for accepted 3 for rejected swaps
 else
     % new 'race' before performing exchange moves
     %% ONE NOT SO SIMPLE SWAP
@@ -29,19 +29,16 @@ else
         acc_y = abs(x_star-observations.y);
         tp.t=toc(tp.all); % check time
         if(tp.t>tp.T)  % stop if global deadline occurs
-            mkswap=0;
+            mkswap = 0;
             rej_out=5;
             break
         end             
         % stop if larger ball is hit
         if(acc_y<E(2)||tp.t>tp.T)
-            mkswap=tp.t<=tp.T;
-            %sample=0;
+            mkswap = tp.t<=tp.T;
             break;
         end
     end
-% acc_y = abs(x_in(swap(2))-observations.y);
-% mkswap = 1;
     % attempt to make swap if hard deadline hasn't been reached
     if(mkswap)
         rej_out = 3; % indicates 'race' completed but swap failed

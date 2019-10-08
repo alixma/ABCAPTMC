@@ -1,23 +1,18 @@
-function [Theta, X, Rej, n, ne, nsw, sw, TM] = ABC_PT_AMC_adaptive_all(C, timepar, params, exchange, observations)
+function [Theta, X, Rej, n, ne, nsw, sw, TM] = ABC_PT_AMC(C, timepar, params, exchange, observations)
 % Single Processor ABC-APTMC algorithm
 % Note:         Outputs all chains
-% Inputs:       K: # chains
-%               Tt: {global deadline, 'real' or 'virtual'}
-%               N:  # slots allocated to matrix X to record samples
-%               C:  run the algorithm C times in parallel
-%               y: observation(s)
-%               sigma: standard deviation for simulating from likelihood
-%               epsilon: matrix of ball radii for all chains (tolerance levels)
-%               prior_params: parameters of Gaussian prior
-%               rho: standard deviation for random walk metropolis proposal
-%               deltat: time between exchange moves
-%               pre: include prior check (true (1) by default)
-%               correct: apply bias correction (1) or not (0)
+% Inputs:       C:  run the algorithm C times in parallel
+%               timepar: time parameters i.e. T, burnin
+%               params: ABC algorithm parameters e.g. K, epsilon, rho
+%               exchange: exchange move parameters e.g. deltat
+%               observations: data and known parameters i.e. y, sigma
 % Outputs:      Theta, X: cold chain(s) and corresponding simulations
+%               Rej: chain composition
 %               n: sample size obtained for each chain 
-%               ne: first sample at minimum epsilon for each chain 
+%               ne: first sample after burn-in for each chain 
 %               nsw: total # exchange moves performed   
 %               sw: total # exchange moves accepted   
+%               TM: timeline of local (1) and exchange (2) moves
 
 N = params.N; K = params.K; 
 
@@ -26,7 +21,7 @@ X = zeros(N, K, C);
 Rej = zeros(N, K, C);
 TM = cell(1, C);
 % initialise theta
-theta = params.theta_in;%normrnd(params.prior(1), params.prior(2), K, C);
+theta = params.theta_in; %normrnd(params.prior(1), params.prior(2), K, C);
 
 n = ones(K, C);
 ne = zeros(K, C);
@@ -71,25 +66,19 @@ parfor c=1:C
         sze1 = sze; szo1=szo;
     end
     % start the clock
-    tp.all=tic; l=0; 
+    tp.all=tic; 
    while tp.t<=tp.T
         tp.ti = 0; tp.r = tic;
-        while (tp.ti<=exch.deltat) && (tp.t<=tp.T) %&& (l<=5*K)
-            %a = tic;
+        while (tp.ti<=exch.deltat) && (tp.t<=tp.T) 
             %% LOCAL MOVES %%
             if(~tp.resume)
                 theta_current = theta1(k);
                 x_current = x(k);
             end
-            % perform local moves for deltat 
-            [theta_current, x_current, tp.resume, tp.ti, rej_loc] = local_moves_adaptive(x_current, theta_current, tp, par, exch, obs, eps1(k));
+            % perform local moves for deltat seconds
+            [theta_current, x_current, tp.resume, tp.ti, rej_loc] = local_moves(x_current, theta_current, tp, par, exch, obs, eps1(k));
             %%%%%%%%%%%%%%%%%%%%%
             rescount(k) = rescount(k) + tp.resume;
-            if rej_loc==1
-                l = l+1;
-            else
-                l=0;
-            end
             %keeping track of time
             tp.t=toc(tp.all);
             
@@ -104,16 +93,13 @@ parfor c=1:C
                 Rej1(n1(k), k) = rej_loc;
                 % switch to next chain
                 rescount(k) = 0;
-                k = k+1; %l = l+1;
+                k = k+1; 
                 if(k>K)
                     k=1;
-                    %disp(toc(a))
                 end
             elseif(rescount(k)>100)
-                % if same chain resumes more than once in a row, get new
+                % if same chain resumes more than 100 times in a row, get new
                 % proposal
-                %theta_current = theta_current(1);
-                %x_current = x_current(1);
                 tp.resume = 0; 
                 rescount(k) = 0;   % reset count
                 %fprintf("\n resetting chain %d", k)
@@ -129,10 +115,9 @@ parfor c=1:C
         end
         TM1(tidx, :) = [tp.ti 1];
         tidx = tidx + 1;
+        
         %keeping track of time
-        tp.t=toc(tp.all);
-        
-        
+        tp.t=toc(tp.all);            
 
         %% EXCHANGE MOVES %%
         if(tp.t<tp.T)
