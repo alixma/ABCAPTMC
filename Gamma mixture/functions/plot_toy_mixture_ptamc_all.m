@@ -1,12 +1,10 @@
- function plot_toy_mixture_ptamc_both(name, deltat, alpha, theta, anytime, rho, nden)
-% Plot histograms of algorithm outputs for all computaitonal complexities
-% Inputs:       name: name of the algorithm e.g. 'ptamc_nocold' or 'parallel'
-%               cor: 'corrected' or 'uncorrected'
+ function plot_toy_mixture_ptamc_all(name, deltat, alpha, theta, anytime, rho, nden)
+% Plot kdes of all algorithm outputs for all computational complexities
+% Inputs:       name: name of the algorithms e.g. {'ptamc_nocold', 'parallel'}
 %               alpha, theta: parameters of Gamma mixture distribution
-%               T:  units of virtual time for which algorithm ran
 %               anytime: include(1) anytime plot or not(0)
 %               rho:  standard deviation for Metropolis update
-%               bins: histogram bins
+%               nden: kde density number of mesh points
 
 figure
 ax1=  [0 10 0.0 1.0];

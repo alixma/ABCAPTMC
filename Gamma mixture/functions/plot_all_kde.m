@@ -21,7 +21,7 @@ for p=0:3
     
     %-% GET COLD CHAINS %-%
     %Multiple processor APTMC%
-    R = dlmread(sprintf('results/BIS/1e6/toy_mixture_parallel_%s_%d_%g_%d_%d.csv', cor, p, T, deltat, rho));
+    R = dlmread(sprintf('results/toy_mixture_parallel_%s_%d_%g_%d_%d.csv', cor, p, T, deltat, rho));
     if(p==3)
         [~, xden1, xmesh1]=kde(R(:,1), 2^7, 0.01, ax1(2));
     else
@@ -32,13 +32,13 @@ for p=0:3
         'LineStyle', '--', 'DisplayName', names{1}, 'linewidth', 1.5);
     
     %Single processor APTMC%
-    R2 = dlmread(sprintf('results/BIS/1e6/toy_mixture_ptamc_%s_%d_%g_%d_%d.csv', cor, p, T, deltat, rho));
+    R2 = dlmread(sprintf('results/toy_mixture_ptamc_%s_%d_%g_%d_%d.csv', cor, p, T, deltat, rho));
     [~, xden2, xmesh2]=kde(R2, nden, 0.01, ax1(2));    
     g2 = plot(xmesh2, xden2, 'color', colour_peach,...
         'LineStyle', '-.', 'DisplayName', names{2}, 'linewidth', 1);
     
     %AMC%
-    R3 = dlmread(sprintf('results/BIS/1e6/toy_mixture_amc_%s_%d_%d_%d.csv', cor, p, T, 1));
+    R3 = dlmread(sprintf('results/toy_mixture_amc_%s_%d_%d_%d.csv', cor, p, T, 1));
     [~, xden3, xmesh3]=kde(R3, nden*2, 0.01, ax1(2));
     g3 = plot(xmesh3, xden3, 'color', colour_green,...
         'LineStyle', ':', 'DisplayName', names{3}, 'linewidth', 1.5);

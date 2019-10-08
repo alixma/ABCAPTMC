@@ -189,6 +189,7 @@ for t = tis
         XE1(swap(mkswap,2)) = XE1(swap(mkswap,1)); 
         XE1(swap(mkswap,1)) = x2;         
         if(~correct) % also swap hold times if no bias correction
+            h2 = hE1(swap(mkswap,2));
             hE1(swap(mkswap,2)) = hE1(swap(mkswap,1));
             hE1(swap(mkswap,1)) = h2;
             active_k(:,2) = hE1;

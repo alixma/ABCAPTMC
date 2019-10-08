@@ -5,7 +5,6 @@ rho = 0.5; bins=250;
 W=8; Lambda = W; lambdas = linspace(Lambda, 1, W);
 Kk=2; init='prior';
 T=1e7+1; N=2*T; deltat=5;
-anytime = 0;
 correct = 1;
 if(correct)
     cor = 'corrected';
@@ -37,8 +36,8 @@ for p=0:3
     [X2, n2] = PT_AMC_parallel(W, 1, T, N, lambdas, Lambda, rho, alpha, theta, p, init, npairs, deltat, 0);
     % remove burn-in
     n21=n2(1,:,1);
-    b2=floor(n2/2)+1;
-    R2=X2(:, b2:n2)';
+    b2=floor(n21/2)+1;
+    R2=X2(:, b2:n21)';
     % save to file
     file = sprintf('results/toy_mixture_parallel_%s_%d_%g_%d_%d.csv', 'uncorrected', p, T, deltat, rho);
     dlmwrite(file, R2);

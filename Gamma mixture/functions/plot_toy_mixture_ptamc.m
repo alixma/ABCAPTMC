@@ -17,9 +17,9 @@ for p = 0:3
     set(h, 'pos', pos);
     
     if strcmp(name, 'amc')
-        R = dlmread(sprintf('results/BIS/toy_mixture_%s_%s_%d_%d_%d.csv', name, cor, p, T, rho));
+        R = dlmread(sprintf('results/toy_mixture_%s_%s_%d_%d_%d.csv', name, cor, p, T, rho));
     else
-        R = dlmread(sprintf('results/BIS/toy_mixture_%s_%s_%d_%g_%d_%d.csv', name, cor, p, T, deltat, rho));
+        R = dlmread(sprintf('results/toy_mixture_%s_%s_%d_%g_%d_%d.csv', name, cor, p, T, deltat, rho));
     end
     
     if(strcmp(cor, 'corrected'))
