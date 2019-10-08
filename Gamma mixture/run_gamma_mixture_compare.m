@@ -1,9 +1,9 @@
 alpha = [3 20]; %[3 15];
 theta = [0.15 0.25]; %[0.15 0.2];
 rho = 0.5; bins=250; nden=2^10;
-W=4; Lambda = W; lambdas = linspace(Lambda, 1, W);
+W=8; Lambda = W; lambdas = linspace(Lambda, 1, W);
 Kk=2; C=1; init='prior';
-T=1e3+1; N=10*T; deltat=5;
+T=1e6+1; N=10*T; deltat=5;
 correct = 1; cor = 'corrected';
 
 npairs=4;
