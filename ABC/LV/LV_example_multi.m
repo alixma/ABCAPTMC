@@ -158,9 +158,9 @@ if(density_plots)
         S_rej, den);
 end
 
-%% Timeplots (ABC-PTMC-1)
-% Timelines of local and exchange moves for the ABC-PTMC algorithm for the
-% first 500 seconds of their runs, to observe the time the algorithm spends
+%% Timeplots
+% Timelines of local and exchange moves for the ABC-(A)PTMC algorithms for the
+% first 300 seconds of their runs, to observe the time the algorithms spend
 % performing each type of update.
 
 if(time_plots)
