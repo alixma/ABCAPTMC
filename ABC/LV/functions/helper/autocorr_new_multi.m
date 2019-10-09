@@ -1,4 +1,6 @@
 function [ESS_OUT, IAT_OUT] = autocorr_new_multi(S, maxc)
+% Compute ess and iat for all components of theta returned by a single
+% algorithm
 if ~exist('maxc', 'var')
     maxc=5;
 end

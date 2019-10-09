@@ -1,10 +1,12 @@
-function multi_timeplots_twice(TM_in, titl, lim, names, standard, col, edgecol)
+function timeplots_multi(TM_in, titl, lim, names, standard, col, edgecol)
 % Function to plot timelines of local and exchange moves
-% Inputs:   TM: []-by-2 matrix of times spent performing local(1) and exchange(2) moves 
+% Inputs:   TM: []-by-W+2 matrix of times spent performing local(1) and exchange(2) moves 
 %           titl: title of the plot
 %           col: colour of the timelines
+%           edgecol: colour of edges (i.e. exchange move colours)
+%           names: worker names
+%           standard: standard(1) or anytime(0) algorithm
 %           lim: x limits to display on the timelines
-% ONLY ADAPTED TO 2 WORKERS
 
 if nargin<2
     titl = 'Timeline';
@@ -12,16 +14,18 @@ if nargin<2
 end
 
 if~exist('names', 'var')
-    names= {'All workers', 'Worker 1: local', 'Worker 2: local', 'Worker 3: local','Worker 4: local'};
+    names= {'All workers', 'Worker 1: local', 'Worker 2: local', 'Worker 3: local',...
+        'Worker 4: local','Worker 5: local','Worker 6: local','Worker 7: local'};
 end
 
 if~exist('col', 'var')
     col = {rgb('DarkOrange'), rgb('SandyBrown'), rgb('SandyBrown'),...
+        rgb('SandyBrown'), rgb('SandyBrown'), rgb('SandyBrown'),... 
         rgb('SandyBrown'), rgb('SandyBrown')};
 end
 if~exist('edgecol', 'var')
     edgecol= {rgb('Red'), rgb('Tomato'), rgb('Tomato'), rgb('Tomato'),...
-        rgb('Tomato')};
+        rgb('Tomato'), rgb('Tomato'), rgb('Tomato'), rgb('Tomato')};
 end
 
 m = size(TM_in, 2);
@@ -50,7 +54,7 @@ if(standard)
     
 else
     % label inter worker exchange moves 3    
-    TM_in(TM_in(:,1)<10,m) = 3;
+    %TM_in(TM_in(:,1)<10,m) = 3;
     % isolate time spent working in parallel (C1) and labels (C3) 
     n = size(TM_in, 1);
     TM_int = zeros(n, 3);
@@ -58,11 +62,11 @@ else
     % identify indices at which each inter worker exchange move and 
     % set of parallel updates begin
     iu = zeros(n,2);
-    idx=1; 
+    idx = 1; 
     for i=1:n
         TM_int(i,3) = idx;
         if(TM_int(i,2)==3)
-            idx=idx+1;
+            idx = idx+1;
             iu(idx, 1) = i;
             iu(idx, 2) = i+1;
         end        
@@ -80,11 +84,10 @@ else
     % performing parallel updates for each set (i.e. unique times), 
     % alternating with time spent performing inter worker exchange moves.
     TM_unique = TM_int(iu(1:end-1), :);
-    nidxes = TM_unique(end,3);
-
+    nidxes = TM_w(end,m);
 end
 
-%timelines of general local + exchange moves
+% timelines of general local + exchange moves
 % cumulative parallel update and inter worker exchange move times
 cmtimes_unique = [cumsum(TM_unique(:,1)) TM_unique(:,2)];
 
@@ -149,7 +152,7 @@ for w=1:W
             if(~isempty(isf))
                 isx = isf(end);
                 if(worker_w(isx, W+1)==2)
-                    is(isx)=false;
+                    is(isx) = false;
                 end
             end
         end
@@ -160,8 +163,7 @@ for w=1:W
 end
 
 
-
-%combine cumulative inter and intra exchange move times for local move timelines per worker
+% combine cumulative inter and intra exchange move times for local move timelines per worker
 % rearrange so that we have local and exchange together for each worker
 % start times for exchange and local moves on workers
 workers = [combined_exchange];% worker_starttimes]combined_exchange; workers = workers(:)';

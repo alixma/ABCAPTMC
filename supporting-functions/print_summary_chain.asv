@@ -39,7 +39,7 @@ for k=1:K
         % Accepted exchange move
         out(k, 5) = sum(Rej(k, 1:n(k))==4)/n(k)*100;
         % Total percentage of exchange move
-        out(k, 6) = out(k, 4)+ out(k, 5);
+        out(k, 5) = out(k, 4)+out(k, 5)
         % Exchange move acceptance rate
         rates(k, 2) = sum(Rej(k, 1:n(k))==4)/sum(Rej(k, 1:n(k))>=3)*100;        
     end

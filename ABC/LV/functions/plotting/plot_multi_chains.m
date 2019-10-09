@@ -7,14 +7,13 @@ if ~exist('col', 'var')
 end
 th = length(true_theta);
 
-%theta_1
 for t=1:th
     subplot(th, 1, t); hold on;
     for w=1:W
         R_w = R{w}; plot(R_w(:, t));
     end
     title(titl); ylabel(sprintf('\\theta_%d', t));
-    hline=refline(0, true_theta(t)); hline.Color = col(t,:);
+    hline = refline(0, true_theta(t)); hline.Color = col(t,:);
 end
 
 end

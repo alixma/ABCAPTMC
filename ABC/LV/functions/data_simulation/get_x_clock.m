@@ -1,4 +1,4 @@
-function [x_out, rej_out, res_out]=get_x_clock(LV, observations, th, deadline, res_in)%, show)
+function [x_out, rej_out, res_out] = get_x_clock(LV, observations, th, deadline, res_in)%, show)
 % Function to obtain simulated values of X_1 at times 1,...10
 deadline.early=1;
 if~exist('res_in', 'var')
