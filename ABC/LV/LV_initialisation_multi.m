@@ -19,8 +19,8 @@ LV.h = @(y, th) [th(1)*y(1), th(2)*y(1)*y(2), th(3)*y(2)];
 
 % Various parameters
 % Run time of algorithm
-params.burnin = 3600;
-params.T = params.burnin+28*3600; params.N = 1e5;
+params.burnin = 600;
+params.T = params.burnin+4*3600; params.N = 1e5;
 nsweeps = 3; ntimes = 1;
 % prior
 params.prior = [1 1 1]; %[1 100 1]; %[1 0.01 1];

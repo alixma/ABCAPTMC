@@ -137,7 +137,8 @@ while now<=deadline.end
                     if(kk>exchange.Kk)
                         kk = 1;
                     end
-                elseif rescount1(kk)>0 %if same chain resumes more than 0 times
+                elseif rescount1(kk)>10 
+                    % if same chain resumes too many times in a row, try again with new proposal
                     resume1 = 0; resumesim1.resume=0; % try new proposal
                     rescount1(kk) = 0; % reset count                    
                 else

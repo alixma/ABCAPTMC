@@ -54,7 +54,7 @@ while t<=params.T
         %%%%%%%%%%%%%%%%%%%%%%
         
         if(~resume)
-            n(k) = n(k)+1;
+            n(k) = n(k) + 1;
             theta(k,:) = params.theta_current;
             x(k,:) = params.x_current;
             Theta(k, :, n(k)) = params.theta_current;
@@ -67,7 +67,7 @@ while t<=params.T
             if(k>K)
                 k = 1;
             end
-        elseif(rescount(k)>0)
+        elseif(rescount(k)>10)
             % if same chain resumes too many times in a row, try again with new proposal
             resume = 0; resumesim.resume = 0;
             rescount(k) = 0;   % reset count

@@ -17,7 +17,8 @@ rej_out = 1; deadline.epsilon = epsilon; SIGMA = diag(SIGMA);
 %% PROPOSAL %%
 % truncated normal
 l = zeros(size(theta));
-u = l + 3; %10 for single processor example
+
+u = l + observations.run_multi*3 + (1-observations.run_multi)*10; % for single processor example
 theta_star = theta + mvrandn(l-theta, u-theta, SIGMA, 1)';
 
 %% PRIOR CHECK %%
