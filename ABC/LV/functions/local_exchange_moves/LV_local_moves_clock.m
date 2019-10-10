@@ -1,4 +1,4 @@
-function [theta_out, x_out, resume, resumesim, rej_out]=LV_local_moves_clock(deadline, observations, params, LV, epsilon, SIGMA, resume, resumesim)
+function [theta_out, x_out, resume, resumesim, rej_out] = LV_local_moves_clock(deadline, observations, params, LV, epsilon, SIGMA, resume, resumesim)
 % Anytime local ABC moves for LV model controlled by clock
 % Inputs:       deadline: time and deadline parameters
 %               observations: observations and simulation settings

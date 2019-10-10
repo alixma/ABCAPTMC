@@ -38,7 +38,7 @@ tww = params.tww; twk = params.twk; evenodd=1;
 
 % initialise theta and x for each chain
 ti = ones(1, params.W); nsw = 0; sw = 0;
-TM = zeros(params.params.N, params.W+2); tidx=1;
+TM = zeros(params.N, params.W+2); tidx=1;
 theta = zeros(exchange.Kk, 3, params.W);
 x = zeros(exchange.Kk, nET, params.W);
 deadline_init.T = 100; deadline.T = params.T;

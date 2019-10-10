@@ -1,11 +1,10 @@
-%% Multiple Processors Example
+%% Initialisation
 % Applying approximate Bayesian computation (ABC) with parallel tempering
 % Monte Carlo (PTMC) and anytime parallel tempering Monte Carlo (APTMC) to
 % estimate the parameters $\theta = \left(\theta_1, \theta_2,
 % \theta_3\right)$ of a stochastic Lotka-Volterra predator-prey model.
 
 % Various flags to decide which algorithms and diagnostics are run
-% clear;
 run_rejection = 0; run_stdexchange = 1; run_anytime=1;
 run_single = 1; run_multi = 1;
 % Plots and diagnostics
@@ -72,8 +71,44 @@ if(acf_plots)
         [ess.anytime, iat.anytime] = autocorr_new_multi(A_e, maxc);
     end
     
-    fprintf("ESS:\n"); disp(ess);
-    fprintf("IAT:\n"); disp(iat);
+    
+    % COMPARE IAT %
+    fprintf('ABC-APTMC-1 has IAT: \n') ;
+    fprintf(' %.3f |', mean(iat.anytime./iat.stdexchange));
+    fprintf(' larger on average than ABC-PTMC-1 \n');
+    
+    fprintf('ABC-PTMC-W has IAT: \n') ;
+    fprintf(' %.3f |', mean(iat.stdexchange./iat.stdexchangem));
+    fprintf(' smaller on average than ABC-PTMC-1 \n');
+    fprintf(' %.3f |', mean(iat.anytime./iat.stdexchangem));
+    fprintf(' smaller on average than ABC-APTMC-1 \n');
+    
+    fprintf('ABC-APTMC-W has IAT: \n') ;
+    fprintf(' %.3f |', mean(iat.stdexchange./iat.anytimem));
+    fprintf(' smaller on average than ABC-PTMC-1 \n');
+    fprintf(' %.3f |', mean(iat.anytime./iat.anytimem));
+    fprintf(' smaller on average than ABC-APTMC-1 \n');
+    fprintf(' %.3f |', mean(iat.stdexchangem./iat.anytimem));
+    fprintf(' smaller on average than ABC-PTMC-W \n');
+    
+    % COMPARE ESS %
+    fprintf('ABC-APTMC-1 has ESS: \n') ;
+    fprintf(' %.3f |', mean(ess.anytime./ess.stdexchange));
+    fprintf(' larger on average than ABC-PTMC-1 \n');
+    
+    fprintf('ABC-PTMC-W has ESS: \n') ;
+    fprintf(' %.3f |', mean(ess.stdexchangem./ess.stdexchange));
+    fprintf(' larger on average than ABC-PTMC-1 \n');
+    fprintf(' %.3f |', mean(ess.stdexchangem./ess.anytime));
+    fprintf(' larger on average than ABC-APTMC-1 \n');
+    
+    fprintf('ABC-APTMC-W has ESS: \n') ;
+    fprintf(' %.3f |', mean(ess.anytimem./ess.stdexchange));
+    fprintf(' larger on average than ABC-PTMC-1 \n');
+    fprintf(' %.3f |', mean(ess.anytimem./ess.anytime));
+    fprintf(' larger on average than ABC-APTMC-1 \n');
+    fprintf(' %.3f |', mean(ess.anytimem./ess.stdexchangem));
+    fprintf(' larger on average than ABC-PTMC-W \n');
     
     acf_params.maxlag = 200;
     acf_params.names = {'ABC-PTMC-1', 'ABC-APTMC-1', 'ABC-PTMC-W', 'ABC-APTMC-W'};

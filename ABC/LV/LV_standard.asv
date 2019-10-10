@@ -23,14 +23,15 @@ end
 %% Single processor standard ABC-MCMC algorithm
 % The vanilla MCMC algorithm which employs ABC in its local moves. The
 % algorithm runs on a cold chain, i.e. associated with the ball of
-% radius $\varepsilon = 1$. The algorithm runs W times in parallel.
+% radius $\varepsilon = 1$.
+% The algorithm runs on K cold chains in parallel.
 
-if(vanilla)
+if(standard)
     % Set random seed
     rng(82521);    
     
     % Start parallel pool on 4 processors
-    W = ntimes;
+    W = 2*ntimes;
     if(isempty(gcp('nocreate')))
         p = parpool(min(W, 4));
         p.IdleTimeout = 9000;

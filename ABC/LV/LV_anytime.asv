@@ -135,6 +135,9 @@ if(run_multi_anytime)
     
     k=1;
     tic
+    dirname =  sprintf('LV_multi_20181127_%s_%d', 'anytime', params.T);
+    %     create folder to store results
+    mkdir(sprintf('results/ABC/LV/%s', dirname))
     params.tww = repmat(1:params.W, exchange.Kk-1, 1);params.tww=params.tww(:);
     
     
@@ -148,7 +151,9 @@ if(run_multi_anytime)
         % Record cold chain
         A_em{idx} = Theta_aem{idx}(k, :, max(1,ane_em(k, idx)):an_em(k, idx)); A_em{idx} = reshape(A_em{idx}, size(A_em{idx}, 2), size(A_em{idx},3))';
         [out_am(:,:,idx), rates_am(:,:,idx), b_am(:,idx)] = print_summary_chain({Rej_aem{idx}, an_em(:, idx), ane_em(:, idx), answ_em(idx), asw_em(idx)}, {params.epsilon, params.SIGMA}, 0, 1);
-                
+        
+        save_one(idx, dirname, 'anytimem', A_em, b_am, TM_am, out_am, rates_am)
+        
     end
     T_am = toc    
 end
