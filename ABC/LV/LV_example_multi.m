@@ -75,7 +75,7 @@ if(acf_plots)
     fprintf("ESS:\n"); disp(ess);
     fprintf("IAT:\n"); disp(iat);
     
-    acf_params.maxlag = 200;
+    acf_params.maxlag = 300;
     acf_params.names = {'ABC-PTMC-1', 'ABC-APTMC-1', 'ABC-PTMC-W', 'ABC-APTMC-W'};
     acf_params.linestyle = {':','--',':', '--'};
     acf_params.marker = {'diamond', 'square', 'diamond', 'square'};
@@ -130,16 +130,16 @@ end
 
 if(time_plots)
     % Timeline plots (one processor)
-    time_interval = [0 min(300, params.T)]; %[max(params.T-300, 0) params.T]; %
+    w = 1; tlim = 300; time_interval = [0 min(tlim, params.T)]; %[max(params.T-tlim, 0) params.T]; %
     
     % Timeline plots (K processors)
     names = {'Global', 'Worker 1', 'Worker 2', 'Worker 3', 'Worker 4', 'Worker 5', 'Worker 6', 'Worker 7'};
     col = {rgb('MediumBlue'), rgb('SkyBlue'), rgb('SkyBlue'),...
         rgb('SkyBlue'), rgb('SkyBlue'), rgb('SkyBlue'), rgb('SkyBlue'), rgb('SkyBlue')};
-    edgecol = {rgb('SkyBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'),...
+    edgecol = {rgb('LightCyan'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'),...
         rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue')};
-    timeplots_multi(TM_m{1}, 'ABC-PTMC-W: Timeline of local and exchange moves', time_interval, names, 1, col, edgecol);
-    timeplots_multi(TM_am{1}, 'ABC-APTMC-W: Timeline of local and exchange moves', time_interval, names, 0);
+    timeplots_multi(TM_m{w}(1:tlim,:), 'ABC-PTMC-W: Timeline of local and exchange moves', time_interval, names, 1, col, edgecol);
+    timeplots_multi(TM_am{w}(1:2*tlim,:), 'ABC-APTMC-W: Timeline of local and exchange moves', time_interval, names, 0);
 end
 
 fprintf('Saving workspace... ')

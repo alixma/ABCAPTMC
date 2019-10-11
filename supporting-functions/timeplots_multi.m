@@ -24,7 +24,7 @@ if~exist('col', 'var')
         rgb('SandyBrown'), rgb('SandyBrown')};
 end
 if~exist('edgecol', 'var')
-    edgecol= {rgb('Red'), rgb('Tomato'), rgb('Tomato'), rgb('Tomato'),...
+    edgecol= {rgb('DarkRed'), rgb('Tomato'), rgb('Tomato'), rgb('Tomato'),...
         rgb('Tomato'), rgb('Tomato'), rgb('Tomato'), rgb('Tomato')};
 end
 
