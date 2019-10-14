@@ -130,7 +130,7 @@ end
 
 if(time_plots)
     % Timeline plots (one processor)
-    w = 1; tlim = 300; time_interval = [0 min(tlim, params.T)]; %[max(params.T-tlim, 0) params.T]; %
+    w = 2; tlim = 300; time_interval = [0 min(tlim, params.T)]; %[max(params.T-tlim, 0) params.T]; %
     
     % Timeline plots (K processors)
     names = {'Global', 'Worker 1', 'Worker 2', 'Worker 3', 'Worker 4', 'Worker 5', 'Worker 6', 'Worker 7'};
@@ -149,7 +149,7 @@ fprintf('done \n')
 % save (or read) everything
 % make folder
 algorithm_names = {'anytime', 'stdexchange', 'stdexchangem','anytimem'};
-saving = 1;
+saving = 0;
 for nalgs=1:length(algorithm_names)
     algorithm_name = algorithm_names{nalgs};
     dirname =  sprintf('LV_multi_%s_%s_%d', datestr(now, 'yyyymmdd'), algorithm_name, params.T);
