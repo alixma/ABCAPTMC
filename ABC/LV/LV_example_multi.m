@@ -81,7 +81,7 @@ if(acf_plots)
     acf_params.marker = {'diamond', 'square', 'diamond', 'square'};
     acf_params.markersize = {4, 3, 2, 2};
     acf_params.col = {rgb('DarkBlue'), rgb('DarkOrange'),  rgb('Teal'), rgb('Red')};
-    [R_out] = acf_keep_maxlag({S_e, A_e, S_em, A_em}, {b_e(1,:),b_a(1, :), b_em(1,:),b_am(1, :)}, acf_params.maxlag);
+    [R_out] = acf_keep_maxlag({S_e, A_e, S_em, A_em}, {b_e(1,:),b_a(1, :), b_em(1,:), b_am(1, :)}, acf_params.maxlag);
     figure;
     for i=1:3
         subplot(3, 1, i); plot_acf_multi(R_out, i, acf_params, sprintf('\\theta_%d', i), 1);
@@ -117,10 +117,12 @@ if(density_plots)
     den = [2^8 2^16 2^8
         2^7 2^7 2^7
         2^7 2^7 2^7
+        2^7 2^7 2^7
         2^7 2^7 2^7];
-    
-    plot_multi_densities({cell2mat(S_e'), cell2mat(S_em'), cell2mat(A_em')},...
-        S_rej, den);
+    names = {'ABC-PTMC-1', 'ABC-APTMC-1', 'ABC-PTMC-W', 'ABC-APTMC-W'};
+    col = {rgb('DarkBlue'), rgb('DarkOrange'),  rgb('Teal'), rgb('Red')};
+    plot_multi_densities({cell2mat(S_e'), cell2mat(A_e'), cell2mat(S_em'), cell2mat(A_em')},...
+        S_rej, den, names, col);
 end
 
 %% Timeplots
@@ -130,7 +132,7 @@ end
 
 if(time_plots)
     % Timeline plots (one processor)
-    w = 2; tlim = 300; time_interval = [0 min(tlim, params.T)]; %[max(params.T-tlim, 0) params.T]; %
+    w = 3; tlim = 300; time_interval = [0 min(tlim, params.T)]; %[max(params.T-tlim, 0) params.T]; %
     
     % Timeline plots (K processors)
     names = {'Global', 'Worker 1', 'Worker 2', 'Worker 3', 'Worker 4', 'Worker 5', 'Worker 6', 'Worker 7'};
@@ -149,7 +151,7 @@ fprintf('done \n')
 % save (or read) everything
 % make folder
 algorithm_names = {'anytime', 'stdexchange', 'stdexchangem','anytimem'};
-saving = 0;
+saving = 0; ntimes = 4; num = 4;
 for nalgs=1:length(algorithm_names)
     algorithm_name = algorithm_names{nalgs};
     dirname =  sprintf('LV_multi_%s_%s_%d', datestr(now, 'yyyymmdd'), algorithm_name, params.T);
@@ -160,14 +162,14 @@ for nalgs=1:length(algorithm_names)
     switch algorithm_name
         case 'anytime'
             if(saving)
-                save_all(dirname, algorithm_name, A_e, b_a, TM_a, out_a, rates_a)
+                save_all(dirname, algorithm_name, A_e, b_a, TM_a, out_a, rates_a, num)
             else
                 [A_e, b_a, TM_a, out_a, rates_a] = read_all(dirname, algorithm_name, ntimes);
             end
 
         case 'anytimem'
             if(saving)
-                save_all(dirname, algorithm_name, A_em, b_am, TM_am, out_am, rates_am)
+                save_all(dirname, algorithm_name, A_em, b_am, TM_am, out_am, rates_am, num)
             else
                 [A_em, b_am, TM_am, out_am, rates_am] = read_all(dirname, algorithm_name, ntimes);
 
@@ -175,14 +177,14 @@ for nalgs=1:length(algorithm_names)
 
         case 'stdexchange'
             if(saving)
-                save_all(dirname, algorithm_name, S_e, b_e, TM, out_e, rates_e)
+                save_all(dirname, algorithm_name, S_e, b_e, TM, out_e, rates_e, num)
             else
                 [S_e, b_e, TM, out_e, rates_e] = read_all(dirname, algorithm_name, ntimes);
             end
 
         case 'stdexchangem'
             if(saving)
-                save_all(dirname, algorithm_name, S_em, b_em, TM_m, out_em, rates_em)
+                save_all(dirname, algorithm_name, S_em, b_em, TM_m, out_em, rates_em, num)
             else
                 [S_em, b_em, TM_m, out_em, rates_em] = read_all(dirname, algorithm_name, ntimes);
             end

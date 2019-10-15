@@ -21,7 +21,7 @@ for i=1:W
 end
 
 if ~exist('maxlag', 'var')    
-    maxlag = min([100 N-1]);
+    maxlag = min([200 N-1]);
 end
 
 % mean acf over all W

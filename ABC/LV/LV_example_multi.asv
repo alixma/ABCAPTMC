@@ -75,7 +75,7 @@ if(acf_plots)
     fprintf("ESS:\n"); disp(ess);
     fprintf("IAT:\n"); disp(iat);
     
-    acf_params.maxlag = 200;
+    acf_params.maxlag = 300;
     acf_params.names = {'ABC-PTMC-1', 'ABC-APTMC-1', 'ABC-PTMC-W', 'ABC-APTMC-W'};
     acf_params.linestyle = {':','--',':', '--'};
     acf_params.marker = {'diamond', 'square', 'diamond', 'square'};
@@ -118,8 +118,8 @@ if(density_plots)
         2^7 2^7 2^7
         2^7 2^7 2^7
         2^7 2^7 2^7];
-    
-    plot_multi_densities({cell2mat(S_e'), cell2mat(S_em'), cell2mat(A_em')},...
+    names = {'ABC-PTMC-1', 'ABC-PTMC-W', 'Standard ABC'}
+    plot_multi_densities({cell2mat(S_e'), cell2mat(S_em'), cell2mat(A_e'), cell2mat(A_em')},...
         S_rej, den);
 end
 
@@ -130,16 +130,16 @@ end
 
 if(time_plots)
     % Timeline plots (one processor)
-    time_interval = [0 min(300, params.T)]; %[max(params.T-300, 0) params.T]; %
+    w = 2; tlim = 300; time_interval = [0 min(tlim, params.T)]; %[max(params.T-tlim, 0) params.T]; %
     
     % Timeline plots (K processors)
     names = {'Global', 'Worker 1', 'Worker 2', 'Worker 3', 'Worker 4', 'Worker 5', 'Worker 6', 'Worker 7'};
     col = {rgb('MediumBlue'), rgb('SkyBlue'), rgb('SkyBlue'),...
         rgb('SkyBlue'), rgb('SkyBlue'), rgb('SkyBlue'), rgb('SkyBlue'), rgb('SkyBlue')};
-    edgecol = {rgb('SkyBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'),...
+    edgecol = {rgb('LightCyan'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'),...
         rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue'), rgb('SteelBlue')};
-    timeplots_multi(TM_m{1}, 'ABC-PTMC-W: Timeline of local and exchange moves', time_interval, names, 1, col, edgecol);
-    timeplots_multi(TM_am{1}, 'ABC-APTMC-W: Timeline of local and exchange moves', time_interval, names, 0);
+    timeplots_multi(TM_m{w}(1:tlim,:), 'ABC-PTMC-W: Timeline of local and exchange moves', time_interval, names, 1, col, edgecol);
+    timeplots_multi(TM_am{w}(1:2*tlim,:), 'ABC-APTMC-W: Timeline of local and exchange moves', time_interval, names, 0);
 end
 
 fprintf('Saving workspace... ')
@@ -149,7 +149,7 @@ fprintf('done \n')
 % save (or read) everything
 % make folder
 algorithm_names = {'anytime', 'stdexchange', 'stdexchangem','anytimem'};
-saving = 1;
+saving = 0; num = 4;
 for nalgs=1:length(algorithm_names)
     algorithm_name = algorithm_names{nalgs};
     dirname =  sprintf('LV_multi_%s_%s_%d', datestr(now, 'yyyymmdd'), algorithm_name, params.T);
@@ -160,14 +160,14 @@ for nalgs=1:length(algorithm_names)
     switch algorithm_name
         case 'anytime'
             if(saving)
-                save_all(dirname, algorithm_name, A_e, b_a, TM_a, out_a, rates_a)
+                save_all(dirname, algorithm_name, A_e, b_a, TM_a, out_a, rates_a, num)
             else
                 [A_e, b_a, TM_a, out_a, rates_a] = read_all(dirname, algorithm_name, ntimes);
             end
 
         case 'anytimem'
             if(saving)
-                save_all(dirname, algorithm_name, A_em, b_am, TM_am, out_am, rates_am)
+                save_all(dirname, algorithm_name, A_em, b_am, TM_am, out_am, rates_am, num)
             else
                 [A_em, b_am, TM_am, out_am, rates_am] = read_all(dirname, algorithm_name, ntimes);
 
@@ -175,14 +175,14 @@ for nalgs=1:length(algorithm_names)
 
         case 'stdexchange'
             if(saving)
-                save_all(dirname, algorithm_name, S_e, b_e, TM, out_e, rates_e)
+                save_all(dirname, algorithm_name, S_e, b_e, TM, out_e, rates_e, num)
             else
                 [S_e, b_e, TM, out_e, rates_e] = read_all(dirname, algorithm_name, ntimes);
             end
 
         case 'stdexchangem'
             if(saving)
-                save_all(dirname, algorithm_name, S_em, b_em, TM_m, out_em, rates_em)
+                save_all(dirname, algorithm_name, S_em, b_em, TM_m, out_em, rates_em, num)
             else
                 [S_em, b_em, TM_m, out_em, rates_em] = read_all(dirname, algorithm_name, ntimes);
             end
