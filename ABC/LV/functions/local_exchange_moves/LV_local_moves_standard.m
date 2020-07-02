@@ -41,7 +41,7 @@ while(race)
         break
     end
     
-    if(toc(rt)>1000) % 5 % taking too long, start over
+    if(toc(rt)>1000) % 100 % taking too long, start over
         star = 0; rej_out = -2;
         % print('reset\n')
         break
