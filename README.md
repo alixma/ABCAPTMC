@@ -1,2 +1,2 @@
-# ABCAPTMC
-Code for ABC-APTMC paper
+# APTMC
+Code for the experiments performed in the paper `Anytime Parallel Tempering'.
